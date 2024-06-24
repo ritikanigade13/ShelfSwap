@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
@@ -15,9 +16,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    gender:{
-        type:String,
-        required:true,
+    gender: {
+      type: String,
+      required: true,
     },
     role: {
       type: String,
@@ -30,20 +31,18 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    return next();
+  }
   try {
-    if (!this.isModified("password")) {
-      return next();
-    }
     const salt = await bcrypt.genSalt(10);
-
-    const hashedPassword = await bcrypt.hash(this.password, salt);
-
-    this.password = hashedPassword;
+    this.password = await bcrypt.hash(this.password, salt);
     next();
   } catch (error) {
-    return next(error);
+    next(error);
   }
 });
+
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
