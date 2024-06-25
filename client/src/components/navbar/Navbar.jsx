@@ -9,22 +9,17 @@ import {
   Button,
   InputBase,
   Avatar,
-  Menu,
-  MenuItem,
-  ListItemIcon,
-  Divider,
 } from "@mui/material";
 import {
-  Menu as MenuIcon,
   Search as SearchIcon,
   AccountCircle as AccountCircleIcon,
   ShoppingCart as ShoppingCartIcon,
 } from "@mui/icons-material";
 import Logo from "../../assets/logo.png";
 import axios from "axios";
+import Sidebar from "../sidebar/Sidebar";
 
 const Navbar = ({ profileImage }) => {
-  const [anchorMenu, setAnchorMenu] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState({});
   const navigate = useNavigate();
@@ -37,9 +32,6 @@ const Navbar = ({ profileImage }) => {
       setUser(JSON.parse(localStorage.getItem("user")));
     }
   }, []);
-
-  const handleMenuOpen = (event) => setAnchorMenu(event.currentTarget);
-  const handleMenuClose = () => setAnchorMenu(null);
 
   const handleLogout = async () => {
     if (!isLoggedIn) return;
@@ -74,6 +66,9 @@ const Navbar = ({ profileImage }) => {
       sx={{ backgroundColor: "#ffffff", color: "#333333", boxShadow: "none" }}
     >
       <Toolbar sx={{ justifyContent: "space-between", alignItems: "center" }}>
+        {/* Sidebar */}
+        <Sidebar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+
         {/* Logo */}
         <Box display="flex" alignItems="center">
           <img src={Logo} alt="Logo" style={{ width: 150, marginRight: 10 }} />
@@ -171,103 +166,6 @@ const Navbar = ({ profileImage }) => {
             </Box>
           )}
         </Box>
-
-        {/* Menu Icon */}
-        <IconButton
-          edge="end"
-          color="inherit"
-          aria-label="menu"
-          onClick={handleMenuOpen}
-        >
-          <MenuIcon sx={{ color: "#1976d2" }} />
-        </IconButton>
-
-        {/* Dropdown Menu */}
-        <Menu
-          anchorEl={anchorMenu}
-          open={Boolean(anchorMenu)}
-          onClose={handleMenuClose}
-          sx={{ mt: 4 }}
-        >
-          {isLoggedIn ? (
-            <MenuItem
-              onClick={() => {
-                handleMenuClose();
-                handleLogout();
-              }}
-            >
-              <ListItemIcon>
-                <AccountCircleIcon fontSize="small" />
-              </ListItemIcon>
-              Logout
-            </MenuItem>
-          ) : (
-            <MenuItem onClick={handleMenuClose} component={Link} to="/login">
-              <ListItemIcon>
-                <AccountCircleIcon fontSize="small" />
-              </ListItemIcon>
-              Login/SignUp
-            </MenuItem>
-          )}
-          <Divider />
-          {[
-            {
-              to: "/browse-categories",
-              label: "Browse Top Book Categories",
-              icon: <SearchIcon fontSize="small" />,
-            },
-            {
-              to: "/my-profile",
-              label: "My Profile",
-              icon: <AccountCircleIcon fontSize="small" />,
-            },
-            {
-              to: "/my-ads",
-              label: "My Ads",
-              icon: <AccountCircleIcon fontSize="small" />,
-            },
-            {
-              to: "/my-orders",
-              label: "My Orders",
-              icon: <ShoppingCartIcon fontSize="small" />,
-            },
-            {
-              to: "/my-selling-orders",
-              label: "My Selling Orders",
-              icon: <ShoppingCartIcon fontSize="small" />,
-            },
-            {
-              to: "/my-chats",
-              label: "My Chats",
-              icon: <AccountCircleIcon fontSize="small" />,
-            },
-            {
-              to: "/cart",
-              label: "Cart",
-              icon: <ShoppingCartIcon fontSize="small" />,
-            },
-            {
-              to: "/wishlist",
-              label: "Wishlist",
-              icon: <ShoppingCartIcon fontSize="small" />,
-            },
-            {
-              to: "/how-it-works",
-              label: "How it Works?",
-              icon: <MenuIcon fontSize="small" />,
-            },
-          ].map((item, index) => (
-            <MenuItem
-              key={index}
-              onClick={handleMenuClose}
-              component={Link}
-              to={item.to}
-            >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              {item.label}
-            </MenuItem>
-          ))}
-        </Menu>
       </Toolbar>
     </AppBar>
   );
