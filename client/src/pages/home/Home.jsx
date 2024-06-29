@@ -9,58 +9,79 @@ import {
   CardActions,
   Box,
 } from "@mui/material";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import handBooksSvg from "../../assets/icons/hand-books.svg";
-import handMoneySvg from "../../assets/icons/hand-money.svg"; 
+import handMoneySvg from "../../assets/icons/hand-money.svg";
+import BookCard from "./BookCard.jsx";
+import BookCarousel from "../../components/carousel/BookCarousel.jsx";
+import { Link } from "react-router-dom";
 
-const BookCard = ({ title, buttonText, bgColor }) => (
-  <Card sx={{ maxWidth: 300, mx: "auto" }}>
-    <CardContent
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        textAlign: "center",
-        backgroundColor: bgColor,
-      }}
-    >
-      <img
-        src={title === "Buy Books" ? handBooksSvg : handMoneySvg}
-        alt={
-          title === "Buy Books" ? "Hand holding books" : "Hand holding money"
-        }
-        style={{ width: "80%", height: "auto", marginBottom: "1rem" }}
-      />
-    </CardContent>
-    <CardActions sx={{ justifyContent: "center" }}>
-      <Button
-        variant="contained"
-        color="primary"
-        startIcon={<ShoppingCartIcon />}
-      >
-        {buttonText}
-      </Button>
-    </CardActions>
-  </Card>
-);
-
+const books = [
+  {
+    id: 1,
+    title: "Book 1",
+    price: "250",
+    image: "https://via.placeholder.com/150",
+  },
+  {
+    id: 2,
+    title: "Book 2",
+    price: "250",
+    image: "https://via.placeholder.com/150",
+  },
+  {
+    id: 3,
+    title: "Book 3",
+    price: "250",
+    image: "https://via.placeholder.com/150",
+  },
+  {
+    id: 4,
+    title: "Book 4",
+    price: "250",
+    image: "https://via.placeholder.com/150",
+  },
+  {
+    id: 5,
+    title: "Book 5",
+    price: "250",
+    image: "https://via.placeholder.com/150",
+  },
+];
+const sendBoxDetails = [
+  {
+    imageURL: handBooksSvg,
+    Heading: "SELL IT",
+    subText: "Get an instant price for your items.",
+  },
+  {
+    imageURL: handBooksSvg,
+    Heading: "SEND IT",
+    subText: "Send your stuff for FREE.",
+  },
+  {
+    imageURL: handBooksSvg,
+    Heading: "SPEND IT",
+    subText: "Get paid by Direct Deposit or PayPal!",
+  },
+];
 const Home = () => {
   return (
-    <Box
-      sx={{
-        mt: 8,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        backgroundImage: "linear-gradient(to right, #6dd5ed, #2193b0)",
-        height: "100vh",
-        padding: "2rem",
-        borderRadius: "10px",
-        boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.1)",
-      }}
-    >
-      <Container maxWidth="md">
+    <>
+      <Container
+        sx={{
+          backgroundImage: "linear-gradient(to right, #6dd5ed, #2193b0)",
+          padding: "2rem",
+          width: "200vw",
+          minWidth: "95vw",
+          borderRadius: "10px",
+          boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.1)",
+          mt: 8,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
         <Typography variant="h2" align="center" gutterBottom color="white">
           Welcome to ShelfSwap
         </Typography>
@@ -75,34 +96,36 @@ const Home = () => {
         <Grid
           container
           spacing={4}
-          justifyContent="flex-end" 
+          justifyContent="center"
           alignItems="center"
-          width="70%"
+          sx={{ width: "70%", mx: "auto" }}
         >
+          <Grid item xs={12} sm={5} md={4}>
+            <BookCard
+              buttonText="Buy Books"
+              bgColor="#0083ca"
+              imgSrc={handBooksSvg}
+              altText="Hand holding books"
+            />
+          </Grid>
           <Grid
             item
             xs={12}
-            sm={5}
-            md={4}
+            sm={2}
+            md={1}
             sx={{ display: "flex", justifyContent: "center" }}
           >
-            <BookCard
-              title="Buy Books"
-              buttonText="Buy Books"
-              bgColor="#0083ca"
-            />
-          </Grid>
-          <Grid item xs={12} sm={2} md={1} sx={{ position: "relative" }}>
             <Box
               sx={{
-                position: "absolute",
-                top: "50%",
-                left: "80%",
-                transform: "translate(-50%, -50%)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
                 backgroundColor: "white",
                 padding: "0.5rem 1rem",
                 borderRadius: "50%",
                 boxShadow: 3,
+                height: "30px",
+                width: "30px",
               }}
             >
               <Typography variant="h6" align="center">
@@ -110,22 +133,60 @@ const Home = () => {
               </Typography>
             </Box>
           </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={5}
-            md={4}
-            sx={{ display: "flex", justifyContent: "center" }}
-          >
+          <Grid item xs={12} sm={5} md={4}>
             <BookCard
-              title="Sell Books"
               buttonText="Sell Books"
               bgColor="#FFF8DD"
+              imgSrc={handMoneySvg}
+              altText="Hand holding money"
             />
           </Grid>
         </Grid>
       </Container>
-    </Box>
+      <Container
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
+        <Typography
+          variant="h5"
+          align="center"
+          gutterBottom
+          color="black"
+          mt="50px"
+        >
+          Recently Added Books
+        </Typography>
+        <BookCarousel books={books} />
+        <Button
+          component={Link}
+          to="/exploreBooks"
+          variant="contained"
+          sx={{
+            width: "fit-content", // Set the desired width here
+            alignSelf: "center", // Center the button horizontally
+            color: "#ffffff",
+            backgroundColor: "black",
+            "&:hover": {
+              backgroundColor: "#fff",
+            },
+          }}
+        >
+          Explore All Books
+        </Button>
+      </Container>
+      <Container sx={{ display: "flex", justifyContent:"space-evenly"}}>
+        {sendBoxDetails.map((sendBox, index) => (
+          <Box key={index}>
+            <img src={sendBox.imageURL} alt="sell" />
+            <Typography variant="h5">{sendBox.Heading}</Typography>
+            <Typography variant="p">{sendBox.subText}</Typography>
+          </Box>
+        ))}
+      </Container>
+    </>
   );
 };
 
