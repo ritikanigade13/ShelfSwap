@@ -13,7 +13,7 @@ import handBooksSvg from "../../assets/icons/hand-books.svg";
 import handMoneySvg from "../../assets/icons/hand-money.svg";
 import BookCard from "./BookCard.jsx";
 import BookCarousel from "../../components/carousel/BookCarousel.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const books = [
   {
@@ -47,6 +47,7 @@ const books = [
     image: "https://via.placeholder.com/150",
   },
 ];
+
 const sendBoxDetails = [
   {
     imageURL: handBooksSvg,
@@ -65,6 +66,7 @@ const sendBoxDetails = [
   },
 ];
 const Home = () => {
+  const navigate = useNavigate();
   return (
     <>
       <Container
@@ -106,6 +108,7 @@ const Home = () => {
               bgColor="#0083ca"
               imgSrc={handBooksSvg}
               altText="Hand holding books"
+              handleClick={() => navigate("/explore-books")}
             />
           </Grid>
           <Grid
@@ -139,6 +142,7 @@ const Home = () => {
               bgColor="#FFF8DD"
               imgSrc={handMoneySvg}
               altText="Hand holding money"
+              handleClick={() => navigate("/explore-books")}
             />
           </Grid>
         </Grid>
@@ -165,8 +169,8 @@ const Home = () => {
           to="/exploreBooks"
           variant="contained"
           sx={{
-            width: "fit-content", // Set the desired width here
-            alignSelf: "center", // Center the button horizontally
+            width: "fit-content",
+            alignSelf: "center",
             color: "#ffffff",
             backgroundColor: "black",
             "&:hover": {
@@ -177,9 +181,15 @@ const Home = () => {
           Explore All Books
         </Button>
       </Container>
-      <Container sx={{ display: "flex", justifyContent:"space-evenly"}}>
+      <Container
+        sx={{
+          display: "flex",
+          justifyContent: "space-evenly",
+          marginTop: "30px",
+        }}
+      >
         {sendBoxDetails.map((sendBox, index) => (
-          <Box key={index}>
+          <Box key={index} sx={{ width: "250px" }}>
             <img src={sendBox.imageURL} alt="sell" />
             <Typography variant="h5">{sendBox.Heading}</Typography>
             <Typography variant="p">{sendBox.subText}</Typography>

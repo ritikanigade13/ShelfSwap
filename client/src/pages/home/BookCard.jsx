@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-const BookCard = ({  buttonText, bgColor, imgSrc, altText }) => (
+const BookCard = ({  buttonText, bgColor, imgSrc, altText, handleClick}) => (
   <Card sx={{ maxWidth: 300, mx: "auto" }}>
     <CardContent
       sx={{
@@ -26,6 +26,7 @@ const BookCard = ({  buttonText, bgColor, imgSrc, altText }) => (
         variant="contained"
         color="primary"
         startIcon={<ShoppingCartIcon />}
+        onClick = {handleClick}
       >
         {buttonText}
       </Button>
